@@ -1,0 +1,33 @@
+name: Deploy Flask API to Azure Web App
+
+on:
+  push:
+    branches:
+      - main  # Trigger deployment on push to the main branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'
+
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+        pip install gunicorn
+
+    - name: Log in to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Deploy to Azure Web App
+      run: |
+        az webapp up --name algorithm --resource-group algorithm_group --plan ASP-MAPTapigroupad16-a782 --sku B1 --runtime "PYTHON|3.9" --os-type Linux
