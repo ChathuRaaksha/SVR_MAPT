@@ -13,6 +13,34 @@ user = "u352881525_mapt"
 password = "Chathu6@ac"
 database = "u352881525_mapt_web"
 
+def get_destinations_from_db():
+    try:
+        # Connect to the database
+        connection = mysql.connector.connect(
+            host=host,
+            user=user,
+            password=password,
+            database=database
+        )
+        
+        cursor = connection.cursor()
+        cursor.execute("SELECT * FROM destinations")
+        rows = cursor.fetchall()
+        
+        columns = ['id', 'name', 'category', 'location', 'description', 'food_and_drink', 'culture_and_heritage', 
+                   'nature_and_adventure', 'art_and_creativity', 'wellness_and_relaxation', 'sustainable_travel', 
+                   'urban_exploration', 'community_and_social_experiences']
+        
+        destinations = pd.DataFrame(rows, columns=columns)
+        
+        cursor.close()
+        connection.close()
+        
+        return destinations
+    except mysql.connector.Error as err:
+        return jsonify({"error": f"Database connection failed: {err}"}), 500
+
+""" 
 # Function to get data from the MySQL database
 def get_destinations_from_db():
     # Connect to the database
@@ -136,6 +164,9 @@ def get_recommendations():
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
+ """
+@app.route('/hello', methods=['GET'])
+def hello_world():
+    return jsonify({"message": "Hello, World!"})
 if __name__ == "__main__":
     app.run(debug=True)
