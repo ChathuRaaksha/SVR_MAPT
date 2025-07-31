@@ -12,8 +12,8 @@ host = "srv1814.hstgr.io"
 user = "u352881525_mapt"
 password = "Chathu6@ac"
 database = "u352881525_mapt_web"
-
-def get_destinations_from_db():
+#
+""" def get_destinations_from_db():
     try:
         # Connect to the database
         connection = mysql.connector.connect(
@@ -39,7 +39,7 @@ def get_destinations_from_db():
         return destinations
     except mysql.connector.Error as err:
         return jsonify({"error": f"Database connection failed: {err}"}), 500
-
+ """
 """ 
 # Function to get data from the MySQL database
 def get_destinations_from_db():
